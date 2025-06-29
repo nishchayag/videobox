@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-import { unique } from "next/dist/build/utils";
 
 export interface UserInterface {
   email: string;
