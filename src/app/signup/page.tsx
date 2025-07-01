@@ -1,18 +1,31 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 function signup() {
   const [form, setForm] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-
+  const [isActive, setIsActive] = useState(false);
   const router = useRouter();
+  useEffect(() => {
+    if (
+      form.email.length > 0 &&
+      form.password.length > 0 &&
+      form.confirmPassword.length > 0
+    ) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, [form]);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsActive(false);
     try {
       if (form.password !== form.confirmPassword) {
         alert("password and confirm password are not same");
@@ -68,11 +81,20 @@ function signup() {
         />
         <button
           type="submit"
-          className="text-xl bg-white text-black px-3 py-2 rounded-lg mt-5 cursor-pointer"
+          className={`text-xl bg-white text-black px-3 py-2 rounded-lg mt-5 ${
+            isActive ? "cursor-pointer" : "cursor-not-allowed"
+          }`}
+          disabled={!isActive}
         >
           Sign up
         </button>
       </form>
+      <p className="text-center pt-10">
+        Already have an account?{" "}
+        <Link href="/login" className="hover:underline">
+          Login
+        </Link>
+      </p>
     </div>
   );
 }
